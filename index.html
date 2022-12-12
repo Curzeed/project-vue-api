@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Api Vue</title>
+</head>
+<body>
+    <div class="app">
+        <h1>Les images de mars</h1>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        
+        const url = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key="+token
+        
+        Vue.createApp({
+            data() {
+                return {
+                    
+                }
+            },
+            created : function () {
+                this.fetchData();
+            },
+            methods : {
+                fetchData : async function (){
+                    const token = "NJl7BrFTx7ZwbxWbm87IahtTMEtJa7DL65f9aTME"
+                    const res = await axios.get(url + token)
+                    console.log(res)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
