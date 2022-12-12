@@ -6,20 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet Api Vue</title>
 </head>
+<style>
+    img{
+        width: 300px;
+        height: 250px;
+    }
+    .container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .photo{
+        display: flex;
+        margin-left: 5px;
+        flex-direction: column;
+    }
+</style>
 <body>
     <div id="app">
         <h1>Les images de mars</h1>
-        <div class="container">
+        <div class="container" v-if="photos.photos">
             <template v-for="photo in photos.photos">
-                <h2>{{photo.rover.name}}</h2>
-                <span class="camera_name">
-                    {{photo.camera.full_name}}
-                </span>
-                <img :src="photo.img_src" alt="image" class="img_mars">
+                <div class="photo">
+                    <h2>Robot : {{photo.rover.name}}</h2>
+                    <span class="camera_name">
+                        Camera : {{photo.camera.full_name}}
+                    </span>
+                    <img :src="photo.img_src" alt="image" class="img_mars">
+                    <span>{{formatDate(photo.earth_date)}}</span>
+                </div>
                 
             </template>
         </div>
-            <button @click="fetchData(page++)">Charger plus</button>
+        <div class="container" v-else>
+            Pas de photos disponibles
+        </div>
+            <button @click="fetchData(page++)">Charger d'autres images</button>
         </div>  
     <script src="https://unpkg.com/vue@3"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -44,10 +66,13 @@
                     try{
                         const res = await axios.get(url + token)
                         console.log(res.data)
-                        this.photos.push(res.data)
+                        this.photos = res.data
                     }catch (error){
                         console.error(error)
                     }
+                },
+                formatDate : function (date){
+                    return new Date(Date.parse(date)).toLocaleDateString('fr-FR')
                 }
             }
         }).mount('#app')
